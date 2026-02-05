@@ -40,4 +40,11 @@ public class VideoJuegoController {
         return videojuegoService.listarTodos();
     }
 
+    @DeleteMapping("/{id}")
+    public void Eliminar(@PathVariable Long id){
+
+        videojuegoService.EliminarVideoJuego(id);
+
+    }
+
 }

@@ -26,4 +26,8 @@ public class VideojuegoService {
         return videojuegoRepository.findAll();
     }
 
+    public void EliminarVideoJuego(Long id ){
+        videojuegoRepository.deleteById(id);
+
+}
 }
