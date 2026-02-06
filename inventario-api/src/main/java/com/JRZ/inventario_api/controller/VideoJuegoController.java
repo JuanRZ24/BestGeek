@@ -47,4 +47,9 @@ public class VideoJuegoController {
 
     }
 
+    @PatchMapping("/{id}")
+    public void actualizarParcial(@PathVariable Long id, @RequestBody VideoJuego detallesParciales){
+        videojuegoService.actualizarParcial(id, detallesParciales);
+    }
+
 }

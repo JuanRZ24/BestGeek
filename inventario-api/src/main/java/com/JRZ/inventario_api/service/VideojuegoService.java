@@ -28,6 +28,18 @@ public class VideojuegoService {
 
     public void EliminarVideoJuego(Long id ){
         videojuegoRepository.deleteById(id);
+    }
 
-}
+    public void actualizarParcial(Long id, VideoJuego cambios) {
+        videojuegoRepository.findById(id).ifPresent(videojuegoExistente -> {
+            if (cambios.getNombre() != null){
+                videojuegoExistente.setNombre(cambios.getNombre());
+            }
+            if (cambios.getPrecio() != null){
+                videojuegoExistente.setPrecio(cambios.getPrecio());
+            }
+            videojuegoRepository.save(videojuegoExistente);
+        });
+    }
+
 }
