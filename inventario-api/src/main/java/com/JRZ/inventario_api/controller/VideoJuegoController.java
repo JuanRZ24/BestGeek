@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/videojuegos")
 public class VideoJuegoController {
     
     private final VideojuegoService videojuegoService;
