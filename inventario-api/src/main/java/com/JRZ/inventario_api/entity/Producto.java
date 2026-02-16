@@ -1,7 +1,13 @@
 package com.JRZ.inventario_api.entity;
 
+
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import java.time.LocalDateTime; // Más moderno y eficiente que java.sql
+
+import org.springframework.cglib.core.Local;
 
 
 
@@ -18,6 +24,17 @@ public class Producto {
     private String nombre;
 
     private Double precio;
+    //relacion
+    @ManyToOne(fetch = FetchType.EAGER) // trae la categoria precargada junto con el producto
+    @JoinColumn(name = "idCategoria") //nombre de la coplumna en la db
+    private Categoria Idcategoria;
+
+    private LocalDateTime fechaPublicacion;
+    @PositiveOrZero
+    private Integer stock;
+
+
+
 
 
 }

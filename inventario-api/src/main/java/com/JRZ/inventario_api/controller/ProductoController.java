@@ -4,7 +4,7 @@ import com.JRZ.inventario_api.entity.Producto;
 import com.JRZ.inventario_api.service.ProductoService;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
