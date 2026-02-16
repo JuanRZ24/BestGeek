@@ -27,7 +27,7 @@ public class Producto {
     //relacion
     @ManyToOne(fetch = FetchType.EAGER) // trae la categoria precargada junto con el producto
     @JoinColumn(name = "idCategoria") //nombre de la coplumna en la db
-    private Categoria Idcategoria;
+    private Categoria categoria;
 
     private LocalDateTime fechaPublicacion;
     @PositiveOrZero
