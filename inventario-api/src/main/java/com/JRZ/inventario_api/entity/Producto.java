@@ -1,16 +1,9 @@
 package com.JRZ.inventario_api.entity;
 
-
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import java.time.LocalDateTime; // Más moderno y eficiente que java.sql
-
-import org.springframework.cglib.core.Local;
-
-
-
 @Entity
 @Table(name = "productos")
 @Data
