@@ -13,7 +13,8 @@ public class InventarioApiApplication {
 
 	public static void main(String[] args) {
 		// Cargar el archivo .env
-        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+        // Le decimos que entre a la subcarpeta inventario-api a buscar el archivo
+		Dotenv dotenv = Dotenv.configure().directory("./inventario-api").load();
         
         // Inyectar las variables manualmente al sistema para que Spring las vea
         dotenv.entries().forEach(entry -> {

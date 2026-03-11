@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
+import java.util.Optional;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,20 +35,45 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-void WhenRegisterUser_ThenHashPasswordAndSave(){
-    User user = new User();
-    user.setHashPassword("12345");
+    void WhenRegisterUser_ThenHashPasswordAndSave(){
+        User user = new User();
+        user.setHashPassword("12345");
 
-    // Cambia esto a minúsculas
-    when(passwordEncoder.encode("12345")).thenReturn("hash_seguro");
-    when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArguments()[0]);
+        // Cambia esto a minúsculas
+        when(passwordEncoder.encode("12345")).thenReturn("hash_seguro");
+        when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArguments()[0]);
 
-    User usuarioGuardado = userService.registrarUsuario(user);
+        User usuarioGuardado = userService.registrarUsuario(user);
 
-    assertNotNull(usuarioGuardado);
-    assertEquals("hash_seguro", usuarioGuardado.getHashPassword()); // Ahora sí coinciden
-    verify(userRepository, times(1)).save(user);
-}
+        assertNotNull(usuarioGuardado);
+        assertEquals("hash_seguro", usuarioGuardado.getHashPassword()); // Ahora sí coinciden
+        verify(userRepository, times(1)).save(user);
+        }
+
+    @Test
+    void WhenLoginUser_ThenGetUser(){
+        // 1. Preparacion
+        String email     = "123@mail.com";
+        String passPlana = "12345";
+        User usuarioSimulado = new User();
+        usuarioSimulado.setEmail(email);
+        usuarioSimulado.setHashPassword("hash_seguro_bd");
+
+        //mocks:
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(usuarioSimulado));
+        when(passwordEncoder.matches(passPlana,"hash_seguro_bd")).thenReturn(true);
+        
+        //act
+
+        User resultado = userService.login(email, passPlana);
+
+        assertNotNull(resultado);
+        assertEquals(email, resultado.getEmail());
+
+        //verificamos
+        verify(userRepository, times(1)).findByEmail(email);
+    }
 
 
 

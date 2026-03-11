@@ -51,4 +51,18 @@ public class UserService {
             userRepository.save(userExistente);
         });
     }
+
+
+    public User login(String email, String passwordPlana) {
+        User usuarioEncontrado = userRepository.findByEmail(email)
+            .orElseThrow(()-> new RuntimeException("Credenciales incorrectas"));
+
+        boolean esValida = passwordEncoder.matches(passwordPlana, usuarioEncontrado.getHashPassword());
+
+        if (!esValida) {
+            throw new RuntimeException("Credenciales incorrectas");
+        }
+
+        return usuarioEncontrado;
+    }
 }
