@@ -2,6 +2,7 @@ package com.JRZ.inventario_api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import com.JRZ.inventario_api.repository.UserRepository;
 import com.JRZ.inventario_api.service.UserService;
 
 import com.JRZ.inventario_api.entity.User;
+import com.JRZ.inventario_api.exception.InvalidCredentialsException;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -73,6 +75,31 @@ public class UserServiceTest {
 
         //verificamos
         verify(userRepository, times(1)).findByEmail(email);
+    }
+
+    @Test 
+    void WhenLoginUser_BadCredentials(){
+        //preparar
+        String email     = "123@gmail.com";
+        String passplana = "12345";
+        User usuarioSimulado = new User();
+        usuarioSimulado.setEmail(email);
+        usuarioSimulado.setHashPassword("hash_seguro_bd");
+
+
+        //mocks
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(usuarioSimulado));
+        when(passwordEncoder.matches(passplana,"hash_seguro_bd")).thenReturn(false);
+
+        //act
+        InvalidCredentialsException exception = assertThrows(InvalidCredentialsException.class, ()-> {
+            userService.login(email,passplana);
+        });
+
+        assertEquals("Credenciales incorrectas", exception.getMessage());
+
+        verify(userRepository, times(1)).findByEmail(email);
+
     }
 
 

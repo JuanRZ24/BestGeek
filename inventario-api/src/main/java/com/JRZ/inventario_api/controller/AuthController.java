@@ -2,6 +2,7 @@ package com.JRZ.inventario_api.controller;
 
 import com.JRZ.inventario_api.dto.LoginRequest;
 import com.JRZ.inventario_api.entity.User;
+import com.JRZ.inventario_api.exception.InvalidCredentialsException;
 import com.JRZ.inventario_api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class AuthController {
             
             return ResponseEntity.ok("Login exitoso. Bienvenido: " + usuarioLogueado.getEmail());
             
-        } catch (RuntimeException e) {
+        } catch (InvalidCredentialsException e) {
             
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

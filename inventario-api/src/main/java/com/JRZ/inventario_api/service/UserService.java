@@ -3,6 +3,7 @@ package com.JRZ.inventario_api.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.JRZ.inventario_api.entity.User;
+import com.JRZ.inventario_api.exception.InvalidCredentialsException;
 import com.JRZ.inventario_api.repository.UserRepository;
 import java.util.List;
 
@@ -55,12 +56,12 @@ public class UserService {
 
     public User login(String email, String passwordPlana) {
         User usuarioEncontrado = userRepository.findByEmail(email)
-            .orElseThrow(()-> new RuntimeException("Credenciales incorrectas"));
+            .orElseThrow(()-> new InvalidCredentialsException("Credenciales incorrectas"));
 
         boolean esValida = passwordEncoder.matches(passwordPlana, usuarioEncontrado.getHashPassword());
 
         if (!esValida) {
-            throw new RuntimeException("Credenciales incorrectas");
+            throw new InvalidCredentialsException();
         }
 
         return usuarioEncontrado;
