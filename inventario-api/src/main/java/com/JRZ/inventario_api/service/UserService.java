@@ -1,5 +1,6 @@
 package com.JRZ.inventario_api.service;
 
+import com.JRZ.inventario_api.dto.RegisterRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.JRZ.inventario_api.entity.User;
@@ -24,11 +25,19 @@ public class UserService {
 
     //post
 
-    public User registrarUsuario(User user){
-        System.out.println("Usuario a guardar: " + user.getEmail());
-        String encodedpass = passwordEncoder.encode(user.getHashPassword());
-        user.setHashPassword(encodedpass);
-        return userRepository.save(user);
+    public User registrarUsuario(RegisterRequest request){
+        User nuevoUsuario = new User();
+    
+        nuevoUsuario.setNombre(request.nombre());
+        nuevoUsuario.setEmail(request.email());
+    
+    
+        String passwordHasheada = passwordEncoder.encode(request.hashPassword());
+    
+        nuevoUsuario.setHashPassword(passwordHasheada);
+    
+    
+        return userRepository.save(nuevoUsuario);
     }
 
 

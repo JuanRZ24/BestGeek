@@ -4,6 +4,9 @@ import com.JRZ.inventario_api.dto.LoginRequest;
 import com.JRZ.inventario_api.entity.User;
 import com.JRZ.inventario_api.exception.InvalidCredentialsException;
 import com.JRZ.inventario_api.service.UserService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login") 
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         try {
             
             User usuarioLogueado = userService.login(request.email(), request.password());

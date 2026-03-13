@@ -5,6 +5,7 @@ import com.JRZ.inventario_api.service.UserService;
 
 import jakarta.validation.Valid;
 
+import com.JRZ.inventario_api.dto.RegisterRequest;
 import com.JRZ.inventario_api.entity.User;
 
 import org.springframework.http.HttpStatus;
@@ -37,10 +38,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> crear(@RequestBody @Valid User user){
-        System.out.println("DEBUG - Nombre: " + user.getNombre());
-        System.out.println("DEBUG - Email: " + user.getEmail());
-        User newUser = userService.registrarUsuario(user);
+    public ResponseEntity<User> crear(@RequestBody @Valid RegisterRequest request){
+        
+        User newUser = userService.registrarUsuario(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 

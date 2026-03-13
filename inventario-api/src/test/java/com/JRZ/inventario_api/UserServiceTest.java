@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.JRZ.inventario_api.repository.UserRepository;
 import com.JRZ.inventario_api.service.UserService;
-
+import com.JRZ.inventario_api.dto.RegisterRequest;
 import com.JRZ.inventario_api.entity.User;
 import com.JRZ.inventario_api.exception.InvalidCredentialsException;
 
@@ -37,20 +37,32 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    void WhenRegisterUser_ThenHashPasswordAndSave(){
-        User user = new User();
-        user.setHashPassword("12345");
+    void WhenRegisterUser_ThenHashPasswordAndSave() {
+        // 1. Preparar
+        // Le pasamos los datos planos directamente al "papel" de registro
+        RegisterRequest request = new RegisterRequest("Juan", "juan@mail.com", "12345");
 
-        // Cambia esto a minúsculas
+        // 2. Mocks
+        // Cuando el encriptador reciba "12345", le decimos que devuelva el hash
         when(passwordEncoder.encode("12345")).thenReturn("hash_seguro");
+        
+        // Cuando el repositorio guarde cualquier Usuario, que devuelva ese mismo Usuario
         when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        User usuarioGuardado = userService.registrarUsuario(user);
+        // 3. Actuar
+        User usuarioGuardado = userService.registrarUsuario(request);
 
+        // 4. Afirmar (Asserts)
         assertNotNull(usuarioGuardado);
-        assertEquals("hash_seguro", usuarioGuardado.getHashPassword()); // Ahora sí coinciden
-        verify(userRepository, times(1)).save(user);
-        }
+        assertEquals("Juan", usuarioGuardado.getNombre());
+        assertEquals("juan@mail.com", usuarioGuardado.getEmail());
+        
+        // ¡La prueba de fuego! Verificamos que no se guardó "12345", sino el hash
+        assertEquals("hash_seguro", usuarioGuardado.getHashPassword()); 
+        
+        // Verificamos que efectivamente se llamó al método save una vez
+        verify(userRepository, times(1)).save(any(User.class));
+}
 
     @Test
     void WhenLoginUser_ThenGetUser(){
