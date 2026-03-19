@@ -3,6 +3,7 @@ package com.JRZ.inventario_api.controller;
 import com.JRZ.inventario_api.dto.LoginRequest;
 import com.JRZ.inventario_api.entity.User;
 import com.JRZ.inventario_api.exception.InvalidCredentialsException;
+import com.JRZ.inventario_api.service.JwtService;
 import com.JRZ.inventario_api.service.UserService;
 
 import jakarta.validation.Valid;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtService  jwtService;
 
     // Inyectamos el servicio igual que lo hicimos antes
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService,JwtService  jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/login") 
@@ -28,8 +31,9 @@ public class AuthController {
             
             User usuarioLogueado = userService.login(request.email(), request.password());
             
+            String tokenGenerado = jwtService.generateToken(usuarioLogueado.getEmail());
             
-            return ResponseEntity.ok("Login exitoso. Bienvenido: " + usuarioLogueado.getEmail());
+            return ResponseEntity.ok(tokenGenerado);
             
         } catch (InvalidCredentialsException e) {
             

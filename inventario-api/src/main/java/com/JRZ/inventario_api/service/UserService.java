@@ -30,6 +30,7 @@ public class UserService {
     
         nuevoUsuario.setNombre(request.nombre());
         nuevoUsuario.setEmail(request.email());
+        nuevoUsuario.setPhoneNumber(request.telefono());
     
     
         String passwordHasheada = passwordEncoder.encode(request.hashPassword());

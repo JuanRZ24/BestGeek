@@ -40,7 +40,7 @@ public class UserServiceTest {
     void WhenRegisterUser_ThenHashPasswordAndSave() {
         // 1. Preparar
         // Le pasamos los datos planos directamente al "papel" de registro
-        RegisterRequest request = new RegisterRequest("Juan", "juan@mail.com", "12345");
+        RegisterRequest request = new RegisterRequest("Juan", "juan@mail.com", "12345","11111111111");
 
         // 2. Mocks
         // Cuando el encriptador reciba "12345", le decimos que devuelva el hash

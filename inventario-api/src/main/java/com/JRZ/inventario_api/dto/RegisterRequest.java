@@ -15,6 +15,10 @@ public record RegisterRequest(
 
         @NotBlank(message = "La contraseña es obligatoria")
         @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres") // ¡Regla extra recomendada!
-        String hashPassword
+        String hashPassword,
+
+        @NotBlank(message =  "El numero de telefono es obligatorio")
+        @Size(min = 11, message = "el numero no es valido")
+        String telefono
 ) {
 }
