@@ -47,7 +47,7 @@ public class User implements UserDetails {
     // 1. ¿Qué roles tiene este usuario? (Por ahora le damos el rol de usuario normal)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
     }
 
     // 2. ¿Cuál es la contraseña encriptada? (Asegúrate de devolver tu variable real de password)

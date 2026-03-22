@@ -4,7 +4,7 @@ import com.JRZ.inventario_api.entity.Producto;
 import com.JRZ.inventario_api.service.ProductoService;
 
 import org.springframework.http.HttpStatus;
-
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +34,7 @@ public class ProductoController {
     public List<Producto> listar(){
         return productoService.listarTodos();
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void Eliminar(@PathVariable Long id){
         productoService.EliminarProducto(id);
