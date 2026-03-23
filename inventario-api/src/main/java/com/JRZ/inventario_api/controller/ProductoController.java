@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/productos")
@@ -21,6 +22,7 @@ public class ProductoController {
     }
 
     //endpoints
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Producto> crear(@RequestBody Producto producto){
         //llamamos al service guardarproducto
@@ -36,13 +38,16 @@ public class ProductoController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public void Eliminar(@PathVariable Long id){
+    public ResponseEntity <?> Eliminar(@PathVariable Long id){
         productoService.EliminarProducto(id);
+        return ResponseEntity.ok(Map.of("mensaje","Borrado exitosamente"));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
-    public void ActualizarProducto(@PathVariable Long id, @RequestBody Producto producto){
-        productoService.ActualizarProducto(id, producto);
+    public ResponseEntity <?> ActualizarProducto(@PathVariable Long id, @RequestBody Producto cambios){
+        productoService.ActualizarProducto(id, cambios);
+        return ResponseEntity.ok(cambios);
     }
 
 

@@ -8,6 +8,8 @@ import com.JRZ.inventario_api.service.UserService;
 
 import jakarta.validation.Valid;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,7 @@ public class AuthController {
             
             String tokenGenerado = jwtService.generateToken(usuarioLogueado.getEmail());
             
-            return ResponseEntity.ok(tokenGenerado);
+            return ResponseEntity.ok(Map.of("TOken:",tokenGenerado));
             
         } catch (InvalidCredentialsException e) {
             
